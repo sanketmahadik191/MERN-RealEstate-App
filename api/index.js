@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import "dotenv/config";
 import userRouter from "./routes/user.route.js";
+import authRoute from "./routes/auth.route.js"
 
 const app = express();
 
@@ -15,8 +16,19 @@ mongoose
 app.get('/',(req,res)=>{
   res.send("hello")
 })
-
+app.use(express.json())
+app.use(authRoute)
 app.use(userRouter)
+
+app.use((err,req,res,next)=>{
+  const statusCode = err.statusCode || 500;
+  const message = err|| 'Internal serevr error';
+  return res.status(statusCode).json({
+    success:false,
+    statusCode: statusCode,
+    message:message
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Server started on ${PORT}`);
