@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 10000;
 
 mongoose
 .connect(process.env.MONGO_URL)
-.then(()=>{console.log("server syatter")})
+.then(()=>{console.log("Conneted To mongoDB")})
 .catch((err)=>{console.log(err)});
 
 app.get('/',(req,res)=>{
@@ -22,7 +22,7 @@ app.use(userRouter)
 
 app.use((err,req,res,next)=>{
   const statusCode = err.statusCode || 500;
-  const message = err|| 'Internal serevr error';
+  const message = err|| 'Internal server error';
   return res.status(statusCode).json({
     success:false,
     statusCode: statusCode,
