@@ -6,23 +6,26 @@ export const signup = async (req, res,next) => {
     const { username, email, password } = req.body;
     
     if(!username || !email || !password){
-        next('All fields are mandatory')
+      return res.status(401).json({ message: "all feilds are mandatory" });
     }
 
     const existingUser = await User.findOne({email});
     if(existingUser){
-        next('Emial alredy in use')
+      return res.status(401).json({ message: "email alredy exist" });
+    }
+
+    const existingUsername = await User.findOne({username});
+    if(existingUsername){
+     return res.status(401).json({ message: "username alredy exist" });
     }
 
     const hasedPass = bcrypt.hashSync(password,10);
-    console.log(hasedPass);
-
-    const newUser = new User({ username, email, password:hasedPass});
+  
+    const newUser =await new User({ username, email, password:hasedPass});
 
     await newUser.save();
 
     res.status(201).json({ message: "User created successfully" });
-    console.log(email);
   } catch (error) {
      next(error); 
   }
