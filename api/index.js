@@ -4,6 +4,7 @@ import cors from 'cors'
 import "dotenv/config";
 import userRouter from "./routes/user.route.js";
 import authRoute from "./routes/auth.route.js"
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -20,16 +21,18 @@ app.get('/',(req,res)=>{
 
 app.use(cors());
 app.use(express.json())
+app.use(cookieParser());
 app.use('/api/auth',authRoute)
 app.use('/api/v1',userRouter)
 
 app.use((err,req,res,next)=>{
   const statusCode = err.statusCode || 500;
-  const message = err|| 'Internal server error';
+  const message = err.message|| 'Internal server error';
+  console.log(45);
   return res.status(statusCode).json({
     success:false,
-    statusCode: statusCode,
-    message:message
+    statusCode,
+    message,
   });
 });
 

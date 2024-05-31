@@ -2,9 +2,7 @@ import bcrypt from 'bcrypt';
 import User from "../models/user.model.js";
 import { errHandler } from '../utils/error.js';
 import jwt from 'jsonwebtoken';
-
 import 'dotenv/config'
-import cookie from 'cookie-parser';
 
 export const signup = async (req, res,next) => {
   try {
@@ -16,17 +14,17 @@ export const signup = async (req, res,next) => {
 
     const existingUser = await User.findOne({email});
     if(existingUser){
-      return res.status(401).json({ message: "email alredy exist" });
+      return next(errHandler(401,"user alredy their"))
     }
 
     const existingUsername = await User.findOne({username});
     if(existingUsername){
-     return res.status(401).json({ message: "username alredy exist" });
+      return next(errHandler(401,"user alredy their"))
     }
 
     const hasedPass = bcrypt.hashSync(password,10);
   
-    const newUser =await new User({ username, email, password:hasedPass});
+    const newUser =new User({ username, email, password:hasedPass});
 
     await newUser.save();
 
@@ -41,11 +39,11 @@ export const signin = async(req,res,next)=>{
     const { email, password } = req.body;
     
     if( !email || !password){
-      return res.status(401).json({ message: "all feilds are mandatory" });
+      return next(errHandler(404,"User not registered"))
     }
 
     const validUser =await User.findOne({email});
-    if(!email){
+    if(!validUser){
      return next(errHandler(404,"User not registered"));
     }
      

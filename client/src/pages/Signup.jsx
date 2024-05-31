@@ -15,8 +15,9 @@ function Signup() {
 
   const handleSubmit =async(e)=>{
     e.preventDefault();
-    setLoading(true);
+   
   try{
+    setLoading(true);
     //send data to api 
     const res = await fetch('/api/auth/signup',
      {
@@ -28,14 +29,14 @@ function Signup() {
      }  
   );
   const data = await res.json();
+  console.log(data);
 
-  if(data.success == false){
-     setError(data.message);
+  if(data.success === false){
      setLoading(false);
+     setError(data.message);
      return;
   }
   setLoading(false);
-  console.log(data);
   setError(null);
   navigate('/sign-in');
 } 
@@ -76,7 +77,7 @@ catch(error){
             <span className="text-blue-400">Sign In</span>
          </Link>
        </div>
-       {error && <p className="text-red-400 mt-5">{error}</p>}
+       { error && <p className="text-red-400 mt-5">{error}</p>}
     </div>
   );
 }
