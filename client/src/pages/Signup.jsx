@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link ,useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 function Signup() {
   const [ formData , setFormData] = useState({});
@@ -70,6 +71,7 @@ catch(error){
           placeholder="password..."onChange={handleChange}
         ></input>
         <button disabled={loading} type="submit" className="bg-slate-700 rounded-lg text-white p-3 uppercase hover:bg-slate-600 disabled:opacity-80">{loading ? 'Loading...':'Sign Up'}</button>
+        <OAuth />
       </form>
        <div className="flex gap-3 mt-5">
          <p>Have an account ?</p>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link ,useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice";
+import OAuth from "../components/OAuth";
 
 export default function Signin() {
   const [ formData , setFormData] = useState({});
@@ -61,6 +62,8 @@ catch(error){
           placeholder="password..."onChange={handleChange}
         ></input>
         <button disabled={loading} type="submit" className="bg-slate-700 rounded-lg text-white p-3 uppercase hover:bg-slate-600 disabled:opacity-80">{loading ? 'Loading...':'Sign In'}</button>
+        <OAuth />
+
       </form>
        <div className="flex gap-3 mt-5">
          <p>Dont have an account ?</p>
