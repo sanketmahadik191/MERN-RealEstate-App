@@ -74,7 +74,7 @@ export const google = async( req,res,next)=>{
    if(user){
     const token = jwt.sign({id:user._id}, process.env.JWT_SECRET_KEY );
 
-    const { password:pass , ...rest}= validUser._doc;
+    const { password , ...rest}= validUser._doc;
 
     res
     .cookie('access_token',token ,{httpOnly: true})
@@ -86,25 +86,23 @@ export const google = async( req,res,next)=>{
     const hasedPass = bcrypt.hashSync(genPass,10);
 
     const newUser = new User({
-      username:req.body.name.split("").join("").toLowerCase(),
+      username:req.body.name.split(" ").join("").toLowerCase(),
       email:req.body.email,
       password:hasedPass,
-      avatar: req.body.photo
+      avatar: req.body.photo,
     })
-
+   
     await newUser.save();
 
     const token = jwt.sign({id:newUser._id}, process.env.JWT_SECRET_KEY );
-    const { password:pass , ...rest}= validUser._doc;
+    const { password, ...rest}= validUser._doc;
     
     res
     .cookie('access_token',token ,{httpOnly: true})
     .status(200)
     .json(rest);
    }
-   }
-  
-  catch(error){
+   }catch(error){
     next(error);
   }
-}
+};
