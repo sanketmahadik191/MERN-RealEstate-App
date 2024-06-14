@@ -6,7 +6,7 @@ export default defineConfig({
   server:{
     proxy:{
       '/api':{
-        target:'http://localhost:10000',
+        target:'https://mern-realestate-app-1.onrender.com',
         changeOrigin:true,
         secure:false
       },
